@@ -1,0 +1,21 @@
+# PyCharm-specific files and directories
+.idea/
+*.iml
+*.iws
+
+# Python-specific files and directories
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+venv/
+env/
+.env
+*.log
+
+# Windows-specific files and directories
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+System Volume Information/
+*.lnk
