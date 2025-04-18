@@ -5,7 +5,3 @@
     ```bash
     docker compose up -d
     ```
-5. execute the python script
-    ```bash
-    python get_brawlstars_data.py
-    ```

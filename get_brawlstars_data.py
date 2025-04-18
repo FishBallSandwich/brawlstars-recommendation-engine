@@ -7,6 +7,8 @@ from tabulate import tabulate
 from mysql_utils import connect_to_mysql, load_into_mysql
 from dotenv import load_dotenv
 import os
+import time
+import subprocess
 
 load_dotenv()
 
@@ -17,8 +19,48 @@ logging.basicConfig(
 api_key = os.getenv("BRAWLSTARS_API_KEY")
 base_url = "https://api.brawlstars.com/"
 api_version = "v1"
+mysql_pw = os.getenv("MYSQL_PASSWORD")
+mysql_host = os.getenv("MYSQL_HOST", "mysql")
 
 headers = {"Authorization": f"Bearer {api_key}"}
+
+
+def wait_for_mysql(
+    host=mysql_host,
+    port=3306,
+    user="root",
+    password=mysql_pw,
+    max_retries=5,
+    delay_seconds=5,
+):
+    retries = 0
+    while retries < max_retries:
+        try:
+            # MySQL admin command to check if MySQL is ready
+            command = [
+                "mysqladmin",
+                "-h",
+                host,
+                "-P",
+                str(port),
+                "-u",
+                user,
+                "-p" + str(password),
+                "ping",
+            ]
+            result = subprocess.run(command, check=True, capture_output=True, text=True)
+            if "mysqld is alive" in result.stdout:
+                logging.info("Successfully connected to MySQL!")
+                return True
+        except subprocess.CalledProcessError as e:
+            logging.info(f"Error connecting to MySQL: {e}")
+            retries += 1
+            logging.info(
+                f"Retrying in {delay_seconds} seconds... (Attempt {retries}/{max_retries})"
+            )
+            time.sleep(delay_seconds)
+    logging.info("Max retries reached. Exiting.")
+    return False
 
 
 def get_battle_logs(player_tag, api_key):
@@ -48,9 +90,9 @@ def get_players_ranking(country_code):
     logging.info(endpoint)
     res = requests.get(endpoint, headers=headers)
     res.raise_for_status()
-    logging.info(res.content)
+    logging.debug(res.content)
     res_json = json.dumps(res.json(), indent=5)
-    logging.info(res_json)
+    logging.debug(res_json)
 
     return res_json, country_code
 
@@ -87,6 +129,8 @@ def players_ranking_to_df(all_players_json, country_code):
 
 
 def main():
+    logging.info("Checking mysql status")
+    wait_for_mysql()
     data, country_code = get_players_ranking("global")
     df = players_ranking_to_df(data, country_code)
     conn = connect_to_mysql()
@@ -97,5 +141,5 @@ def main():
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

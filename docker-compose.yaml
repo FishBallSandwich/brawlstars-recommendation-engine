@@ -9,4 +9,19 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DB}
-    restart: unless-stopped
+    restart: no
+
+  brawlstars-etl:
+    build: .
+    container_name: brawlstars-etl-container
+    environment:
+      - BRAWLSTARS_API_KEY=${BRAWLSTARS_API_KEY}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_DB=${MYSQL_DB}
+    depends_on:
+      - mysql
+    restart: no
+
