@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawlstars Player Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            background-color: AntiqueWhite;
+        }
+        th {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brawlstars Player Data</h1>
+
+    {% if data %}
+    <table>
+        <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.player_tag }}</td>
+                <td>{{ row.player_name }}</td>
+                <td>{{ row.player_rank }}</td>
+                <td>{{ row.player_club }}</td>
+                <td>{{ row.country }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No data found in the table.</p>
+    {% endif %}
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
