@@ -1,8 +1,8 @@
-## Feature Description
+## PR Description
 
 <!--
-Describe the feature, the PR title should be formatted like 'Feature: XXX'
-We are using feature branch workflow, the branch name should also be formatted like 'feature/XXX'
+Describe the feature, the PR title should be formatted like 'Feature: XXX' or 'Fix: XXX'
+We are using feature branch workflow, the branch name should also be formatted like 'feature/XXX'...etc
 -->
 
 ## Check list
