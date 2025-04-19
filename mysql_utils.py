@@ -40,12 +40,13 @@ def load_into_mysql(df, engine, table_name):
         print(err)
         return None
 
+
 def mysql_to_df(engine, sql):
     try:
         with engine.begin() as connection:
-            print('retrieving table')
+            print("retrieving table")
             df = pd.read_sql(sql, con=connection)
-            print('retrieved table to df')
+            print("retrieved table to df")
             return df
     except Exception as err:
         print(err)
