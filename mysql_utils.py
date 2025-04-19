@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, URL
 from dotenv import load_dotenv
+import pandas as pd
 import os
 
 load_dotenv()
@@ -37,3 +38,16 @@ def load_into_mysql(df, engine, table_name):
             print("success loading table")
     except Exception as err:
         print(err)
+        return None
+
+
+def mysql_to_df(engine, sql):
+    try:
+        with engine.begin() as connection:
+            print("retrieving table")
+            df = pd.read_sql(sql, con=connection)
+            print("retrieved table to df")
+            return df
+    except Exception as err:
+        print(err)
+        return None
