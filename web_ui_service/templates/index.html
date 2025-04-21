@@ -7,18 +7,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-
 {% if countries %}
-<h1>Choose a country to show the top 200 players in the country</h1>
-{% for country in countries %}
+<h1>Choose a country to show the top 200 players for {{ country_code }}</h1>
+<div class="content">
 <ul>
+    {% for country in countries %}
     <li><a href="{{ url_for('player_ranking_data', country_code=country) }}">{{ country }}</a></li>
+    {% endfor %}
 </ul>
-{% endfor %}
-
 {% else %}
 <h1>No countries found</h1>
 {% endif %}
-
+</div>
 </body>
 </html>
