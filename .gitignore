@@ -10,8 +10,9 @@ __pycache__/
 *.pyo
 venv/
 env/
-.env
+etl_service/.env
 *.log
+*.env
 
 # Windows-specific files and directories
 Thumbs.db
