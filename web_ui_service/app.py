@@ -10,11 +10,12 @@ def index():
     sql = "SELECT distinct country from player_data ORDER BY 1"
     df = mysql_to_df(engine, sql)
     print(df)
-    country_codes_list = df['country'].tolist()
+    country_codes_list = df["country"].tolist()
 
     return render_template("index.html", countries=country_codes_list)
 
-@app.route('/<country_code>', methods= ['GET'])
+
+@app.route("/<country_code>", methods=["GET"])
 def player_ranking_data(country_code):
     try:
         engine = connect_to_mysql()
@@ -27,18 +28,23 @@ def player_ranking_data(country_code):
         data = df.to_dict("records")
         columns = df.columns.tolist()
         country_code_upper_case = country_code.upper()
-        print(f'country_code: {country_code}')
-        return render_template("player_data.html", data=data, columns=columns, country_code=country_code_upper_case)
+        print(f"country_code: {country_code}")
+        return render_template(
+            "player_data.html",
+            data=data,
+            columns=columns,
+            country_code=country_code_upper_case,
+        )
 
     except Exception as e:
         print(e)
         abort(404)
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     print(e)
     return render_template("404.html")
-
 
 
 if __name__ == "__main__":

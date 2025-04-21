@@ -111,7 +111,6 @@ def get_players_ranking(country_code):
 
 
 def players_ranking_to_df(all_players_json, country_code):
-
     try:
         all_players = json.loads(all_players_json).get("items")
         player_data_list = []
@@ -144,7 +143,8 @@ def players_ranking_to_df(all_players_json, country_code):
         return player_data_df
 
     except Exception as err:
-        logging.exception(f'An error occured: {err}, traceback:')
+        logging.exception(f"An error occured: {err}, traceback:")
+
 
 def main():
     logging.info("Starting etl job")
