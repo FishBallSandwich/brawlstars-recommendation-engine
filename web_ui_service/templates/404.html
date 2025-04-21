@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Not Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>Oops Dopsy!</h1>
+    <p>The page you're looking for doesn't exist.</p>
+    <img src="{{ url_for('static', filename='images/poco_sad.png') }}" alt="404 Error" width="400">
+    <a href="/">Go back home</a>
+</body>
+</html>

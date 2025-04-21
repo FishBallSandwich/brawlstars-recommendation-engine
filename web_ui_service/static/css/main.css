@@ -24,3 +24,13 @@ td {
 th {
     background-color: lightblue;
 }
+
+img {
+    margin-top: 20px;
+    margin-bottom: 80px;
+}
+
+a {
+    left:0;
+    display:block;
+}

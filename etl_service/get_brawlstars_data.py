@@ -111,36 +111,40 @@ def get_players_ranking(country_code):
 
 
 def players_ranking_to_df(all_players_json, country_code):
-    all_players = json.loads(all_players_json).get("items")
-    player_data_list = []
-    player_data_schema = ["player_tag", "player_name", "player_rank", "player_club"]
-    for player in all_players:
-        player_tag = player.get("tag")
-        logging.debug(f"player_tag: {player_tag}")
-        player_name = player.get("name")
-        logging.debug(f"player_name: {player_name}")
-        player_rank = player.get("rank")
-        logging.debug(f"player_rank: {player_rank}")
-        player_club = player.get("club", {}).get("name")
-        logging.debug(f"player_club: {player_club}")
 
-        player_data_list.append(
-            {
-                "player_tag": player_tag,
-                "player_name": player_name,
-                "player_rank": player_rank,
-                "player_club": player_club,
-            }
+    try:
+        all_players = json.loads(all_players_json).get("items")
+        player_data_list = []
+        player_data_schema = ["player_tag", "player_name", "player_rank", "player_club"]
+        for player in all_players:
+            player_tag = player.get("tag")
+            logging.debug(f"player_tag: {player_tag}")
+            player_name = player.get("name")
+            logging.debug(f"player_name: {player_name}")
+            player_rank = player.get("rank")
+            logging.debug(f"player_rank: {player_rank}")
+            player_club = player.get("club", {}).get("name")
+            logging.debug(f"player_club: {player_club}")
+
+            player_data_list.append(
+                {
+                    "player_tag": player_tag,
+                    "player_name": player_name,
+                    "player_rank": player_rank,
+                    "player_club": player_club,
+                }
+            )
+
+        player_data_df = pd.DataFrame(
+            player_data_list, columns=player_data_schema, dtype=object
         )
+        player_data_df["country"] = country_code
+        logging.info(tabulate(player_data_df, headers="keys", tablefmt="psql"))
+        logging.info(f"Retrieved data for {country_code}")
+        return player_data_df
 
-    player_data_df = pd.DataFrame(
-        player_data_list, columns=player_data_schema, dtype=object
-    )
-    player_data_df["country"] = country_code
-    logging.info(tabulate(player_data_df, headers="keys", tablefmt="psql"))
-    logging.info(f"Retrieved data for {country_code}")
-    return player_data_df
-
+    except Exception as err:
+        logging.exception(f'An error occured: {err}, traceback:')
 
 def main():
     logging.info("Starting etl job")
