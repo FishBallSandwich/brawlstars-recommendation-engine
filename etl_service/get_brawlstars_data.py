@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import os
 import time
 import subprocess
+import yaml
 
 load_dotenv()
 
@@ -61,6 +62,18 @@ def wait_for_mysql(
             time.sleep(delay_seconds)
     logging.info("Max retries reached. Exiting.")
     return False
+
+
+def read_etl_config(config_filepath):
+    try:
+        with open(config_filepath, "r") as file:
+            config = yaml.safe_load(file)
+            logging.info(config)
+            return config
+
+    except Exception as err:
+        logging.exception(f"An error occured: {err}, traceback:")
+        return None
 
 
 def get_battle_logs(player_tag, api_key):
@@ -125,20 +138,26 @@ def players_ranking_to_df(all_players_json, country_code):
     )
     player_data_df["country"] = country_code
     logging.info(tabulate(player_data_df, headers="keys", tablefmt="psql"))
+    logging.info(f"Retrieved data for {country_code}")
     return player_data_df
 
 
 def main():
+    logging.info("Starting etl job")
     logging.info("Checking mysql status")
     wait_for_mysql()
-    data, country_code = get_players_ranking("global")
-    df = players_ranking_to_df(data, country_code)
-    conn = connect_to_mysql()
-    load_into_mysql(
-        df,
-        conn,
-        table_name="player_data",
-    )
+    etl_config = read_etl_config("config.yml")
+    country_codes = etl_config["country_codes"]
+    for country_code in country_codes:
+        data, etl_country_code = get_players_ranking(country_code)
+        df = players_ranking_to_df(data, etl_country_code)
+        conn = connect_to_mysql()
+        load_into_mysql(
+            df,
+            conn,
+            table_name="player_data",
+        )
+    logging.info("Ending etl job")
 
 
 if __name__ == "__main__":

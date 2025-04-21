@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from mysql_utils import connect_to_mysql, mysql_to_df
+from etl_service.mysql_utils import connect_to_mysql, mysql_to_df
 
 app = Flask(__name__)
 
