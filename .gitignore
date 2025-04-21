@@ -12,6 +12,7 @@ venv/
 env/
 .env
 *.log
+*.env
 
 # Windows-specific files and directories
 Thumbs.db
