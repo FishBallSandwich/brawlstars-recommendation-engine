@@ -63,16 +63,18 @@ def wait_for_mysql(
     logging.info("Max retries reached. Exiting.")
     return False
 
+
 def read_etl_config(config_filepath):
     try:
-        with open(config_filepath, 'r') as file:
+        with open(config_filepath, "r") as file:
             config = yaml.safe_load(file)
             logging.info(config)
             return config
 
     except Exception as err:
-        logging.exception(f'An error occured: {err}, traceback:')
+        logging.exception(f"An error occured: {err}, traceback:")
         return None
+
 
 def get_battle_logs(player_tag, api_key):
     path = f"{api_version}/players/{quote(player_tag)}/battlelog"
@@ -136,16 +138,16 @@ def players_ranking_to_df(all_players_json, country_code):
     )
     player_data_df["country"] = country_code
     logging.info(tabulate(player_data_df, headers="keys", tablefmt="psql"))
-    logging.info(f'Retrieved data for {country_code}')
+    logging.info(f"Retrieved data for {country_code}")
     return player_data_df
 
 
 def main():
-    logging.info('Starting etl job')
+    logging.info("Starting etl job")
     logging.info("Checking mysql status")
     wait_for_mysql()
-    etl_config = read_etl_config('config.yml')
-    country_codes = etl_config['country_codes']
+    etl_config = read_etl_config("config.yml")
+    country_codes = etl_config["country_codes"]
     for country_code in country_codes:
         data, etl_country_code = get_players_ranking(country_code)
         df = players_ranking_to_df(data, etl_country_code)
@@ -155,7 +157,7 @@ def main():
             conn,
             table_name="player_data",
         )
-    logging.info('Ending etl job')
+    logging.info("Ending etl job")
 
 
 if __name__ == "__main__":
