@@ -34,7 +34,7 @@ def load_into_mysql(df, engine, table_name):
     try:
         with engine.begin() as connection:
             print(f"Loading into table {table_name}")
-            df.to_sql(name=table_name, con=connection, if_exists="replace", index=False)
+            df.to_sql(name=table_name, con=connection, if_exists="append", index=False)
             print("success loading table")
     except Exception as err:
         print(err)

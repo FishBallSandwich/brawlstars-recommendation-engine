@@ -12,7 +12,7 @@ services:
     restart: no
 
   brawlstars-etl:
-    build: .
+    build: ./etl_service
     container_name: brawlstars-etl-container
     environment:
       - BRAWLSTARS_API_KEY=${BRAWLSTARS_API_KEY}
