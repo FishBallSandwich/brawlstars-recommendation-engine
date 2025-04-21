@@ -5,3 +5,9 @@
     ```bash
     docker compose up -d
     ```
+   
+
+**Disclaimer: This is merely a side project for hobby purpose and I do not own any of the images**
+
+
+**If you are the copyright holder of any image used in this project and believe that its use constitutes copyright infringement, please contact me**
