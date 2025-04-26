@@ -1,5 +1,5 @@
 from flask import Flask, render_template, abort
-from etl_service.mysql_utils import connect_to_mysql, mysql_to_df
+from utils.mysql_utils import connect_to_mysql, mysql_to_df
 
 app = Flask(__name__)
 
@@ -48,4 +48,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
