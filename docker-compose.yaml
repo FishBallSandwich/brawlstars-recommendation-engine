@@ -24,4 +24,16 @@ services:
     depends_on:
       - mysql
     restart: no
-
+  brawlstars-web-ui:
+    build: ./web_ui_service
+    container_name: brawlstars-web-ui-container
+    ports:
+      - "5000:5000"
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_DB=${MYSQL_DB}
+    depends_on:
+      - mysql
