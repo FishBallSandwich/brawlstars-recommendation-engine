@@ -24,6 +24,7 @@ services:
     depends_on:
       - mysql
     restart: no
+
   brawlstars-web-ui:
     build: ./web_ui_service
     container_name: brawlstars-web-ui-container
@@ -36,4 +37,7 @@ services:
       - MYSQL_PORT=${MYSQL_PORT}
       - MYSQL_DB=${MYSQL_DB}
     depends_on:
-      - mysql
+      brawlstars-etl:
+        condition: service_completed_successfully
+      mysql:
+        condition: service_started
